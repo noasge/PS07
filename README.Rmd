@@ -1,0 +1,44 @@
+---
+title: "Average Age of Members in Congress"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## GitHub Documents
+
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r cars}
+library(ggplot2)
+library(dplyr)
+library(fivethirtyeight)
+
+avg_congress_age <- congress_age %>%
+  select(termstart, party, age) %>%
+  group_by(termstart, party) %>%
+  summarize(mean_age = mean(age)) %>%
+  filter(party == "R"| party == "D")
+
+avg_congress_age <- avg_congress_age %>%
+  mutate(mean_age_months =(mean_age*12))
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+ggplot(avg_congress_age,aes(x=termstart, y=mean_age, factor=party, color=party))+geom_line()+
+  ylim(40,60)+
+  labs(title="Average Age of Members in Congress", subtitle="at start of term 1947-2013", x="date", y="average age")+
+  scale_color_manual(values=c("D"="#0000ff", "R"="#ff0000"))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
